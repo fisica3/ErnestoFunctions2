@@ -4,7 +4,7 @@ using Microsoft.Azure.WebJobs.Host;
 
 namespace FunctionAppInVSErnesto
 {
-    //Forzando una nueva build y Release.
+    //Forzando una nueva build y Release, veamos...
     public static class BlobTriggerCSharp
     {
         [FunctionName("BlobTriggerCSharp")]
