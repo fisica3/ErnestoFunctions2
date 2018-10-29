@@ -35,7 +35,7 @@ namespace FunctionAppInVSErnesto
                 return new OkObjectResult($"Go Deploy");
             }
 
-            return new BadRequestObjectResult("Wrongly activation");
+            return new BadRequestObjectResult("Wrongly activation.");
         }
     }
 }
