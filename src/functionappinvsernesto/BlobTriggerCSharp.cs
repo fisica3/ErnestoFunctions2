@@ -1,6 +1,7 @@
 using System.IO;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Azure.WebJobs.Extensions.Storage;
 
 namespace FunctionAppInVSErnesto
 {
