@@ -1,8 +1,8 @@
 {
-    "version": "2.0",
-    "IsEncrypted": false,
+  "version": "2.0",
+  "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=sgdemofunctions049db1;AccountKey=v2VH1EexsBO7LK2O5FFcziWJInXFQ79olIw8dp3cw64k71c1V7z5UiXLrUZULOXXtw1Q7mt5J6SonxeM1zOCkA==;",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=false"
   }
-  }
+}
