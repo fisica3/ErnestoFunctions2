@@ -11,7 +11,7 @@ variables:
   azureSubscription: 'Sponsorship for Functions'
 
   # Function app name
-  functionAppName: 'democnp01'
+  functionAppName: 'democnp03'
 
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
