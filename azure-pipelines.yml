@@ -8,7 +8,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '89f21b48-2a5e-477c-ac88-c9cbb8401024'
+  # azureSubscription: '89f21b48-2a5e-477c-ac88-c9cbb8401024'
 
   # Function app name
   functionAppName: 'democnp01'
@@ -70,7 +70,7 @@ stages:
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
             inputs:
-              azureSubscription: '$(azureSubscription)'
+              azureSubscription: 'Sponsorship for Functions'
               appType: 'functionApp'
               appName: '$(functionAppName)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
