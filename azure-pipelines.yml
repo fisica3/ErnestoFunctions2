@@ -8,10 +8,10 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'fa467a87-7ff9-4f86-8abd-6f48b656a48f'
+  azureSubscription: 'Sponsorship for Functions'
 
   # Function app name
-  functionAppName: 'destinoalterno'
+  functionAppName: 'democnp01'
 
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
