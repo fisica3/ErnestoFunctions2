@@ -16,7 +16,7 @@ namespace FunctionAppInVSErnesto
             {
                 a = rnd.Next(450);
             }
-            log.LogInformation($"C# Queue trigger function processed: {myQueueItem} {a}");
+            log.LogInformation($"*-*-C# Queue trigger function processed: {myQueueItem} {a}");
         }
     }
 }
