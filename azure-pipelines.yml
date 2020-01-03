@@ -8,10 +8,10 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'c76cddd0-a25d-455f-b485-22299374d79d'
+  azureSubscription: 'Sponsorship for Functions'
 
   # Function app name
-  functionAppName: 'destinoalterno'
+  functionAppName: 'democnp03'
 
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
@@ -71,6 +71,7 @@ stages:
             displayName: 'Azure functions app deploy'
             inputs:
               azureSubscription: '$(azureSubscription)'
-              appType: functionApp
-              appName: $(functionAppName)
+              appType: 'functionApp'
+              appName: '$(functionAppName)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+              deploymentMethod: 'zipDeploy'
