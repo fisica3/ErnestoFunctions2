@@ -3,6 +3,7 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=storageaccountrgfun95e0;AccountKey=9IqxoRenDXSIXN16K40odFLT9CVM5jONJLuxFMd19GRH/UZANYXltJNURMiwWIfWkpijCEwIbTCxuHJWREBIFw==;EndpointSuffix=core.windows.net",
+    "ErnestoQueue": "DefaultEndpointsProtocol=https;AccountName=storageaccountrgfun95e0;AccountKey=9IqxoRenDXSIXN16K40odFLT9CVM5jONJLuxFMd19GRH/UZANYXltJNURMiwWIfWkpijCEwIbTCxuHJWREBIFw==;EndpointSuffix=core.windows.net",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=false"
   }
 }
