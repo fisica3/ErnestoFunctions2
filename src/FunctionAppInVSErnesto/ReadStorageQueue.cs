@@ -8,7 +8,7 @@ namespace FunctionAppInVSErnesto
     public static class ReadStorageQueue
     {
         [FunctionName("ReadStorageQueue")]
-        public static void Run([QueueTrigger("democola", Connection = "ErnestoQueue")]string myQueueItem, ILogger log)
+        public static void Run([QueueTrigger("democola", Connection = "AzureWebJobsStorage")]string myQueueItem, ILogger log)
         {
             var rnd = new System.Random(System.DateTime.Now.Millisecond);
             int a=0;
