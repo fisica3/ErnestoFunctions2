@@ -35,7 +35,7 @@ namespace FunctionAppInVSErnesto
                 return new OkObjectResult($"Go Deploy");
             }
 
-            return new BadRequestObjectResult("Wrongly activation, usa un nombre diferente.");
+            return new BadRequestObjectResult("Activacion erronea, usa un nombre diferente.");
         }
     }
 }
