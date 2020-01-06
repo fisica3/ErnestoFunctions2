@@ -12,11 +12,11 @@ namespace FunctionAppInVSErnesto
         {
             var rnd = new System.Random(System.DateTime.Now.Millisecond);
             int a=0;
-            for (int i = 0; i < 50200; i++)
+            for (int i = 0; i < 80200; i++)
             {
                 a = rnd.Next(450);
             }
-            log.LogInformation($"El Trigger de la cola proceso: {myQueueItem} {a}");
+            log.LogInformation($"**El Trigger de la cola proceso: {myQueueItem} {a}");
         }
     }
 }
