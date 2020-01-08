@@ -27,7 +27,7 @@ namespace FunctionAppInVSErnesto
                 log.LogInformation($"OJO!! El valor capturado es: {name}");
                 return (ActionResult)new OkObjectResult($"Hello, {name}");
             }
-            else return new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            else return new BadRequestObjectResult("Por favor pase el parametro name en el querystring o en el body del POST");
         }
     }
 }
