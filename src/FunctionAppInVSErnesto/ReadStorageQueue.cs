@@ -13,14 +13,14 @@ namespace FunctionAppInVSErnesto
         {
             var rnd = new System.Random(System.DateTime.Now.Millisecond);
             int a=0;
-            for (int i = 0; i < 2080200; i++)
+            for (int i = 0; i < 1080200; i++)
             {
                 a = rnd.Next(450);
                 var temporal = myQueueItem + a.ToString();
                 String.Concat(temporal.OrderBy(c => c));
             }
             
-            log.LogInformation($"**El Trigger de la cola proceso: {myQueueItem} {a}");
+            log.LogInformation($"**El Trigger de la cola proceso: {myQueueItem}");
         }
     }
 }
