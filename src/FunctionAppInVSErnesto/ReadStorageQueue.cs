@@ -13,7 +13,7 @@ namespace FunctionAppInVSErnesto
         {
             var rnd = new System.Random(System.DateTime.Now.Millisecond);
             int a=0;
-            for (int i = 0; i < 1580200; i++)
+            for (int i = 0; i < 80000; i++) //1580200
             {
                 a = rnd.Next(450);
                 var temporal = myQueueItem + a.ToString();
