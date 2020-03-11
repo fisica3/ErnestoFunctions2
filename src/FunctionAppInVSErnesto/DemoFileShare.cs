@@ -25,19 +25,20 @@ namespace FunctionAppInVSErnesto
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string shareName = req.Query["sharename"];
+            string fileName = req.Query["filename"];
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            shareName = shareName ?? data?.shareName;
+            //string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            //dynamic data = JsonConvert.DeserializeObject(requestBody);
+            //shareName = shareName ?? data?.shareName;
 
-            if (shareName != null)
+            if (shareName != null && fileName!=null)
             {
-                log.LogInformation($"OJO!! El nombre del Share capturado es: {shareName}");
+                log.LogInformation($"OJO!! El nombre del Share es: {shareName}, y el nombre de file es {fileName}");
                 var connectionString = "DefaultEndpointsProtocol=https;AccountName=sgdemofunctions049db1;AccountKey=v2VH1EexsBO7LK2O5FFcziWJInXFQ79olIw8dp3cw64k71c1V7z5UiXLrUZULOXXtw1Q7mt5J6SonxeM1zOCkA==;EndpointSuffix=core.windows.net";
-                DownloadAndCopy(connectionString,shareName,"", log);
+                DownloadAndCopy(connectionString,shareName, fileName, log);
                 return (ActionResult)new OkObjectResult($"Hello, {shareName}");
             }
-            else return new BadRequestObjectResult("Por favor pase el parametro name en el querystring o en el body del POST");
+            else return new BadRequestObjectResult("Por favor pase los parametros en el querystring");
         }
 
         /// <summary>
@@ -52,18 +53,11 @@ namespace FunctionAppInVSErnesto
         /// <param name="localFilePath">
         /// Path to download the local file.
         /// </param>
-        public static void DownloadAndCopy(string connectionString, string shareName, string localFilePath, ILogger log)
+        public static void DownloadAndCopy(string connectionString, string shareName, string fileName, ILogger log)
         {
             #region Snippet:Azure_Storage_Files_Shares_Samples_Sample01a_HelloWorld_Download
-            //@@ string connectionString = "DefaultEndpointsProtocol=https;AccountName=sgdemofunctions049db1;AccountKey=v2VH1EexsBO7LK2O5FFcziWJInXFQ79olIw8dp3cw64k71c1V7z5UiXLrUZULOXXtw1Q7mt5J6SonxeM1zOCkA==;EndpointSuffix=core.windows.net";
 
-            // Name of the share, directory, and file we'll download from
-            //@@ string shareName = "sample-share";
             string dirName = "prueba-dir";
-            string fileName = "descarga.png";
-
-            // Path to the save the downloaded file
-            //@@ string localFilePath = @"<path_to_local_file>";
 
             // Get a reference to the file
             ShareClient share = new ShareClient(connectionString, shareName);
@@ -78,7 +72,7 @@ namespace FunctionAppInVSErnesto
           //  container.Create();
 
             // Get a reference to a blob named "sample-file" in a container named "sample-container"
-            BlobClient blob = container.GetBlobClient("nuevonombre.png");
+            BlobClient blob = container.GetBlobClient("fileName");
 
             // Upload local file
             
