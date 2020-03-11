@@ -65,8 +65,7 @@ namespace FunctionAppInVSErnesto
             ShareFileClient file = directory.GetFileClient(fileName);
 
             var uriFile = file.Uri;
-            var containerName = "destino";
-            log.LogInformation($"Atención: El nombre del Share capturado es: {shareName}");
+            var containerName = "destino";           
 
             BlobContainerClient container = new BlobContainerClient(connectionString, containerName);
           //  container.Create();
@@ -77,7 +76,7 @@ namespace FunctionAppInVSErnesto
             // Upload local file
             
             blob.Upload(file.Download().Value.Content);
-
+            log.LogInformation($"Archivo {fileName} copiado en container {containerName}");
             /*
             // Download the file
             ShareFileDownloadInfo download = file.Download();
