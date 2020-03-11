@@ -72,7 +72,7 @@ namespace FunctionAppInVSErnesto
           //  container.Create();
 
             // Get a reference to a blob named "sample-file" in a container named "sample-container"
-            BlobClient blob = container.GetBlobClient("fileName");
+            BlobClient blob = container.GetBlobClient(fileName);
 
             // Upload local file
             
