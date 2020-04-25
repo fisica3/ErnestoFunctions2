@@ -20,7 +20,7 @@ namespace FunctionAppInVSErnesto
                 String.Concat(temporal.OrderBy(c => c));
             }
             
-            log.LogInformation($"**El Trigger de la cola proceso: {myQueueItem} ");
+            log.LogInformation($"**El Trigger de la cola proceso en Azure Community Day: {myQueueItem} ");
         }
     }
 }
