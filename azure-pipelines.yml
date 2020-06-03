@@ -12,7 +12,7 @@ variables:
 
   # Function app name
   functionAppName: 'democnp03'
-
+  functionAppNameUat: 'demofunctions04'
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
 
@@ -50,14 +50,14 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
 
-- stage: Deploy
+- stage: DeployDev
   displayName: Deploy stage
   dependsOn: Build
   condition: succeeded()
 
   jobs:
-  - deployment: Deploy
-    displayName: Deploy
+  - deployment: DeployDev
+    displayName: DeployDev
     environment: 'development'
     pool:
       vmImage: $(vmImageName)
@@ -75,3 +75,29 @@ stages:
               appName: '$(functionAppName)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               deploymentMethod: 'zipDeploy'
+
+- stage: DeployUAT
+  displayName: Deploy stage
+  dependsOn: DeployDev
+  condition: succeeded()
+
+  jobs:
+  - deployment: DeployUat
+    displayName: DeployDev
+    environment: 'envuat'
+    pool:
+      vmImage: $(vmImageName)
+
+    strategy:
+      runOnce:
+        deploy:
+
+          steps:
+          - task: AzureFunctionApp@1
+            displayName: 'Azure functions app deploy'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              appType: 'functionApp'
+              appName: '$(functionAppName)'
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+              deploymentMethod: 'zipDeploy'              
