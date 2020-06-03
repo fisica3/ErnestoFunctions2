@@ -51,7 +51,7 @@ stages:
       artifact: drop
 
 - stage: DeployDev
-  displayName: Deploy stage
+  displayName: Deploy DEV
   dependsOn: Build
   condition: succeeded()
 
@@ -77,13 +77,13 @@ stages:
               deploymentMethod: 'zipDeploy'
 
 - stage: DeployUAT
-  displayName: Deploy stage
+  displayName: Deploy UAT
   dependsOn: DeployDev
   condition: succeeded()
 
   jobs:
   - deployment: DeployUat
-    displayName: DeployDev
+    displayName: DeployUat
     environment: 'envuat'
     pool:
       vmImage: $(vmImageName)
