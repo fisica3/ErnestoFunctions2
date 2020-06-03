@@ -56,16 +56,14 @@ stages:
   condition: succeeded()
 
   jobs:
-  - deployment: DeployDev
-    displayName: DeployDev
+  - deployment: JDeployDev
+    displayName: Job Deploy Dev
     environment: 'development'
     pool:
       vmImage: $(vmImageName)
-
     strategy:
       runOnce:
         deploy:
-
           steps:
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
@@ -82,16 +80,14 @@ stages:
   condition: succeeded()
 
   jobs:
-  - deployment: DeployUat
-    displayName: DeployUat
+  - deployment: JDeployUat
+    displayName: Job Deploy Uat
     environment: 'envuat'
     pool:
       vmImage: $(vmImageName)
-
     strategy:
       runOnce:
         deploy:
-
           steps:
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
