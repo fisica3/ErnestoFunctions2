@@ -14,7 +14,7 @@ variables:
   functionAppNameDev: 'democnp03'
   functionAppNameUat: 'demofunctions04'
   # Agent VM image name
-  vmImageName: 'vs2017-win2016'
+  vmImageName: 'windows-2019'
 
   # Working Directory
   workingDirectory: '$(System.DefaultWorkingDirectory)/src/functionappinvsernesto'
