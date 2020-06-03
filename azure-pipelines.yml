@@ -73,6 +73,8 @@ stages:
               appName: '$(functionAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               deploymentMethod: 'zipDeploy'
+          - script: echo "Hola Cuarentena Nights, este es un mensaje de prueba "
+            displayName: 'Step Test Dev (msg)'    
 
 - stage: DeployUAT
   displayName: Deploy UAT
