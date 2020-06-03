@@ -11,7 +11,7 @@ variables:
   azureSubscription: 'Sponsorship for Functions'
 
   # Function app name
-  functionAppName: 'democnp03'
+  functionAppNameDev: 'democnp03'
   functionAppNameUat: 'demofunctions04'
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
@@ -72,7 +72,7 @@ stages:
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
-              appName: '$(functionAppName)'
+              appName: '$(functionAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               deploymentMethod: 'zipDeploy'
 
@@ -98,6 +98,6 @@ stages:
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
-              appName: '$(functionAppName)'
+              appName: '$(functionAppNameUat)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               deploymentMethod: 'zipDeploy'              
