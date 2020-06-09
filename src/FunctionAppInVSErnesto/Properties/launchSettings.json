@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FunctionAppInVSErnesto": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "KeyConnectionString": "Endpoint=https://ernestoappconfig.azconfig.io;Id=h1Os-l6-s0:akessiaAqVUfOhkfAt/D;Secret=t16k5ulYDqyqdJfjr2Mu8QTLtaqs8L7y3pqyC5Vvf5I="
+      }
+    }
+  }
+}
