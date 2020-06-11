@@ -44,12 +44,12 @@ stages:
           - script: echo $(resources.pipeline.functionsorigin.sourceProvider)
           - script: echo $(resources.pipeline.functionsorigin.requestedFor)
           - script: echo $(resources.pipeline.functionsorigin.requestedForID)
-          - script: echo $(resources.pipeline.functionsorigin.BuildId)          
+          #- script: echo $(resources.pipeline.functionsorigin.BuildId)          
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
               appName: '$(functionAppNameUat)'              
-              package: '$(Pipeline.Workspace)/functionsorigin/drop/$(Build.BuildId).zip'
+              package: '$(Pipeline.Workspace)/functionsorigin/drop/$(resources.pipeline.functionsorigin.runID).zip'
               deploymentMethod: 'zipDeploy'              
