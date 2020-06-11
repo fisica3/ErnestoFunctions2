@@ -34,7 +34,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: dir $(Pipeline.Workspace)/functionsorigin/drop/
+          - script: ls '$(Pipeline.Workspace)/functionsorigin/drop/'
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
             inputs:
