@@ -12,9 +12,6 @@ pool:
 stages:
 - stage: DeployUAT
   displayName: Deploy UAT
-  dependsOn: DeployDev
-  condition: succeeded()
-
   jobs:
   - deployment: JDeployUat
     displayName: Job Deploy Uat
