@@ -21,9 +21,6 @@ variables:
   # Agent VM image name
   vmImageName: 'windows-2019'
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 stages:
 - stage: DeployUAT
   displayName: Deploy UAT
