@@ -35,11 +35,21 @@ stages:
         deploy:
           steps:
           - script: ls '$(Pipeline.Workspace)/functionsorigin/drop/'
+          - script: echo $(resources.pipeline.functionsorigin.pipelineID)
+          - script: echo $(resources.pipeline.functionsorigin.runName)
+          - script: echo $(resources.pipeline.functionsorigin.runID)
+          - script: echo $(resources.pipeline.functionsorigin.runURI)
+          - script: echo $(resources.pipeline.functionsorigin.sourceBranch)
+          - script: echo $(resources.pipeline.functionsorigin.sourceCommit)
+          - script: echo $(resources.pipeline.functionsorigin.sourceProvider)
+          - script: echo $(resources.pipeline.functionsorigin.requestedFor)
+          - script: echo $(resources.pipeline.functionsorigin.requestedForID)
+          - script: echo $(resources.pipeline.functionsorigin.BuildId)          
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
-              appName: '$(functionAppNameUat)'
+              appName: '$(functionAppNameUat)'              
               package: '$(Pipeline.Workspace)/functionsorigin/drop/$(Build.BuildId).zip'
               deploymentMethod: 'zipDeploy'              
