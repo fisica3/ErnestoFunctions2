@@ -37,11 +37,12 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: AzureFunctionApp@1
-            displayName: 'Azure functions app deploy'
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              appType: 'functionApp'
-              appName: '$(functionAppNameUat)'
-              package: '$(Pipeline.Workspace)/functionsorigin/drop/$(Build.BuildId).zip'
-              deploymentMethod: 'zipDeploy'              
+          - script: ls $(Pipeline.Workspace)/functionsorigin/
+          #- task: AzureFunctionApp@1
+          #  displayName: 'Azure functions app deploy'
+          #  inputs:
+          #    azureSubscription: '$(azureSubscription)'
+          #    appType: 'functionApp'
+          #    appName: '$(functionAppNameUat)'
+          #    package: '$(Pipeline.Workspace)/functionsorigin/drop/$(Build.BuildId).zip'
+          #    deploymentMethod: 'zipDeploy'              
