@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Azure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -20,16 +21,24 @@ namespace FunctionAppInVSErnesto
         static HttpTriggerCSharpFromVs()
         {
             var builder = new ConfigurationBuilder();
-            var cadena = Environment.GetEnvironmentVariable("ConnectionString");
-            builder.AddAzureAppConfiguration(options =>
+            bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+            if (isLocal)
             {
-                options.Connect(cadena)
-                    .ConfigureRefresh(refreshOptions =>
-                        refreshOptions.Register("TestApp:Settings:Message")
-                            .SetCacheExpiration(TimeSpan.FromSeconds(60))
-                    );
-                ConfigurationRefresher = options.GetRefresher();
-            });
+                builder.AddAzureAppConfiguration(Environment.GetEnvironmentVariable("KeyConnectionString"));
+            }
+            else
+            {
+                builder.AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential())
+                        .ConfigureRefresh(refreshOptions =>
+                            refreshOptions.Register("TestApp:Settings:Message")
+                                .SetCacheExpiration(TimeSpan.FromSeconds(60))
+                        );
+                    ConfigurationRefresher = options.GetRefresher();
+                });
+            }
+
             Configuration = builder.Build();
         }
 
