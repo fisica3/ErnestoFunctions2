@@ -33,7 +33,7 @@ namespace FunctionAppInVSErnesto
                     options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential())
                         .ConfigureRefresh(refreshOptions =>
                             refreshOptions.Register("TestApp:Settings:Message")
-                                .SetCacheExpiration(TimeSpan.FromSeconds(60))
+                                .SetCacheExpiration(TimeSpan.FromSeconds(120))
                         );
                     ConfigurationRefresher = options.GetRefresher();
                 });
