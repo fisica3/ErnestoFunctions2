@@ -10,6 +10,7 @@
     <Compile Remove="DemoDurable.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.1.1" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.3.0" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.12.0" />
