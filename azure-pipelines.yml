@@ -76,26 +76,3 @@ stages:
           - script: echo "Hola Cuarentena Nights, este es un mensaje de prueba "
             displayName: 'Step Test Dev (msg)'    
 
-- stage: DeployUAT
-  displayName: Deploy UAT
-  dependsOn: DeployDev
-  condition: succeeded()
-
-  jobs:
-  - deployment: JDeployUat
-    displayName: Job Deploy Uat
-    environment: 'envuat'
-    pool:
-      vmImage: $(vmImageName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureFunctionApp@1
-            displayName: 'Azure functions app deploy'
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              appType: 'functionApp'
-              appName: '$(functionAppNameUat)'
-              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              deploymentMethod: 'zipDeploy'              
