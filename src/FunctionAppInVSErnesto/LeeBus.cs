@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +10,7 @@ namespace FunctionAppInVSErnesto
     public static class LeeBus
     {
         private static IConfiguration Configuration { set; get; }
+        
         static LeeBus()
         {
             var builder = new ConfigurationBuilder();

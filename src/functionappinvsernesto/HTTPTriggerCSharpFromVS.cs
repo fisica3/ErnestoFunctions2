@@ -12,16 +12,19 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 namespace FunctionAppInVSErnesto
+// https://docs.microsoft.com/es-mx/azure/azure-app-configuration/quickstart-azure-functions-csharp
+// https://docs.microsoft.com/en-us/azure/azure-app-configuration/howto-integrate-azure-managed-service-identity?tabs=core3x
+// https://docs.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-azure-functions-csharp
 {
     public static class HttpTriggerCSharpFromVs
     {
         private static IConfiguration Configuration { set; get; }
         private static IConfigurationRefresher ConfigurationRefresher { set; get; }
-
+        private static bool isLocal;
         static HttpTriggerCSharpFromVs()
         {
             var builder = new ConfigurationBuilder();
-            bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
             if (isLocal)
             {
                 builder.AddAzureAppConfiguration(Environment.GetEnvironmentVariable("KeyConnectionString"));
@@ -47,7 +50,7 @@ namespace FunctionAppInVSErnesto
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            await ConfigurationRefresher.RefreshAsync();
+            if (!isLocal) await ConfigurationRefresher.RefreshAsync();
             string keyName = "TestApp:Settings:Message";
             string message = Configuration[keyName];
 
