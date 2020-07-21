@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=storageaccountrgfun95e0;AccountKey=9IqxoRenDXSIXN16K40odFLT9CVM5jONJLuxFMd19GRH/UZANYXltJNURMiwWIfWkpijCEwIbTCxuHJWREBIFw==;EndpointSuffix=core.windows.net",
