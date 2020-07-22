@@ -54,7 +54,7 @@ namespace FunctionAppInVSErnesto
 
             if (!isLocal) await ConfigurationRefresher.RefreshAsync();
             string keyName = "claveSQL";//"TestApp:Settings:Message";
-            string message = Configuration. [keyName];
+            string message = Configuration[keyName];
 
             /* string name = req.Query["name"];
 
