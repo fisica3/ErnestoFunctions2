@@ -3,7 +3,7 @@
     "FunctionAppInVSErnesto": {
       "commandName": "Project",
       "environmentVariables": {
-        "KeyConnectionString": "Endpoint=https://ernestoappconfig.azconfig.io;Id=h1Os-l6-s0:akessiaAqVUfOhkfAt/D;Secret=t16k5ulYDqyqdJfjr2Mu8QTLtaqs8L7y3pqyC5Vvf5I="
+        "KeyConnectionString": "Endpoint=https://ernestoappconfigtest.azconfig.io;Id=JuzM-l6-s0:iAhmymgxIRX3DcEKzFc5;Secret=W+uAJsYjYzpot58n/KeO7zrznxQ1T4E79LO+wxMRW/8="
       }
     }
   }

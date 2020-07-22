@@ -15,6 +15,7 @@ namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/es-mx/azure/azure-app-configuration/quickstart-azure-functions-csharp
 // https://docs.microsoft.com/en-us/azure/azure-app-configuration/howto-integrate-azure-managed-service-identity?tabs=core3x
 // https://docs.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-azure-functions-csharp
+// https://docs.microsoft.com/en-us/azure/key-vault/general/managed-identity
 {
     public static class HttpTriggerCSharpFromVs
     {
@@ -33,9 +34,10 @@ namespace FunctionAppInVSErnesto
             {
                 builder.AddAzureAppConfiguration(options =>
                 {
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential())
+                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")),
+                            new ManagedIdentityCredential())
                         .ConfigureRefresh(refreshOptions =>
-                            refreshOptions.Register("TestApp:Settings:Message")
+                            refreshOptions.Register("claveSQL")//" TestApp:Settings:Message")
                                 .SetCacheExpiration(TimeSpan.FromSeconds(120))
                         );
                     ConfigurationRefresher = options.GetRefresher();
@@ -51,8 +53,8 @@ namespace FunctionAppInVSErnesto
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             if (!isLocal) await ConfigurationRefresher.RefreshAsync();
-            string keyName = "TestApp:Settings:Message";
-            string message = Configuration[keyName];
+            string keyName = "claveSQL";//"TestApp:Settings:Message";
+            string message = Configuration. [keyName];
 
             /* string name = req.Query["name"];
 
