@@ -39,12 +39,12 @@ namespace FunctionAppInVSErnesto
                             new ManagedIdentityCredential())
                         .ConfigureKeyVault(kv =>
                         {
-                            kv.SetCredential(new ManagedIdentityCredential());
-                        })
-                        .ConfigureRefresh(refreshOptions =>
+                            kv.SetCredential(new DefaultAzureCredential());
+                        });
+                        /*.ConfigureRefresh(refreshOptions =>
                             refreshOptions.Register("claveSQL")//" TestApp:Settings:Message")
                                 .SetCacheExpiration(TimeSpan.FromSeconds(120))
-                        );
+                        );*/
                     ConfigurationRefresher = options.GetRefresher();
                 });
             }
