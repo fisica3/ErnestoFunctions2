@@ -76,7 +76,7 @@ namespace FunctionAppInVSErnesto
 
             return message != null
                 ? (ActionResult)new OkObjectResult(message)
-                : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration.");
+                : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration,  thanks.");
         }
     }
 }
