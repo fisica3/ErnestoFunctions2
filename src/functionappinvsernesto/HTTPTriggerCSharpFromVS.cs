@@ -35,17 +35,12 @@ namespace FunctionAppInVSErnesto
             {
                 builder.AddAzureAppConfiguration(options =>
                 {
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")),
-                            new ManagedIdentityCredential())
-                        .ConfigureKeyVault(kv =>
-                        {
-                            kv.SetCredential(new DefaultAzureCredential());
-                        });
-                        /*.ConfigureRefresh(refreshOptions =>
-                            refreshOptions.Register("claveSQL")//" TestApp:Settings:Message")
-                                .SetCacheExpiration(TimeSpan.FromSeconds(120))
-                        );*/
-                    //ConfigurationRefresher = options.GetRefresher();
+                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential())
+                        .ConfigureRefresh(refreshOptions =>
+                            refreshOptions.Register("TestApp:Settings:Message")
+                                .SetCacheExpiration(TimeSpan.FromSeconds(30))
+                        );
+                    ConfigurationRefresher = options.GetRefresher();
                 });
             }
 
