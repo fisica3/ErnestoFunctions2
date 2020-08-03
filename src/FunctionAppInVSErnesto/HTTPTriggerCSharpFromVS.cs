@@ -40,12 +40,11 @@ namespace FunctionAppInVSErnesto
                         .ConfigureKeyVault(kv =>
                         {
                             kv.SetCredential(new DefaultAzureCredential());
-                        });
-                        /*.ConfigureRefresh(refreshOptions =>
-                            refreshOptions.Register("claveSQL")//" TestApp:Settings:Message")
-                                .SetCacheExpiration(TimeSpan.FromSeconds(120))
-                        );*/
-                    //ConfigurationRefresher = options.GetRefresher();
+                        }).ConfigureRefresh(refreshOptions =>
+                            refreshOptions.Register("TestApp:Settings:Message")
+                                .SetCacheExpiration(TimeSpan.FromSeconds(30))
+                        ); //claveSQL")//"
+                    ConfigurationRefresher = options.GetRefresher();
                 });
             }
 
