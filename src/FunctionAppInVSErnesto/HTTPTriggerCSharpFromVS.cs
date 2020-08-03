@@ -58,7 +58,7 @@ namespace FunctionAppInVSErnesto
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             if (!isLocal) await ConfigurationRefresher.RefreshAsync();
-            string keyName = "claveSQL";//"TestApp:Settings:Message";
+            string keyName = "TestApp:Settings:Message";// "claveSQL";//
             string message = Configuration[keyName];
 
             /* string name = req.Query["name"];
