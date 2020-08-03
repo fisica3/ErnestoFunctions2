@@ -16,6 +16,7 @@ namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/en-us/azure/azure-app-configuration/howto-integrate-azure-managed-service-identity?tabs=core3x
 // https://docs.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-azure-functions-csharp
 // https://docs.microsoft.com/en-us/azure/key-vault/general/managed-identity
+// https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-key-vault-references-dotnet-core?tabs=cmd%2Ccore2x
 {
     public static class HttpTriggerCSharpFromVs
     {
@@ -36,10 +37,14 @@ namespace FunctionAppInVSErnesto
                 {
                     options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")),
                             new ManagedIdentityCredential())
-                        .ConfigureRefresh(refreshOptions =>
+                        .ConfigureKeyVault(kv =>
+                        {
+                            kv.SetCredential(new DefaultAzureCredential());
+                        });
+                        /*.ConfigureRefresh(refreshOptions =>
                             refreshOptions.Register("claveSQL")//" TestApp:Settings:Message")
                                 .SetCacheExpiration(TimeSpan.FromSeconds(120))
-                        );
+                        );*/
                     ConfigurationRefresher = options.GetRefresher();
                 });
             }
