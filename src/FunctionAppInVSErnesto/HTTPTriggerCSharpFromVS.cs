@@ -45,7 +45,7 @@ namespace FunctionAppInVSErnesto
                             refreshOptions.Register("claveSQL")//" TestApp:Settings:Message")
                                 .SetCacheExpiration(TimeSpan.FromSeconds(120))
                         );*/
-                    ConfigurationRefresher = options.GetRefresher();
+                    //ConfigurationRefresher = options.GetRefresher();
                 });
             }
 
