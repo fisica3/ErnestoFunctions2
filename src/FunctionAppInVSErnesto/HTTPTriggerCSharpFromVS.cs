@@ -55,20 +55,6 @@ namespace FunctionAppInVSErnesto
             if (!isLocal) await ConfigurationRefresher.RefreshAsync();
             string keyName = "TestApp:Settings:Message";// "claveSQL";//
             string message = Configuration[keyName];
-
-            /* string name = req.Query["name"];
-
-             string requestBody = new StreamReader(req.Body).ReadToEnd();
-             dynamic data = JsonConvert.DeserializeObject(requestBody);
-             name = name ?? data?.name;
-
-             if (name != null)
-             {
-                 log.LogInformation($"OJO!! El valor capturado es: {name}");
-                 return (ActionResult)new OkObjectResult($"Hello, {name}");
-             }
-             else return new BadRequestObjectResult("Por favor pase el parametro name en el querystring o en el body del POST"); */
-
             return message != null
                 ? (ActionResult)new OkObjectResult(message)
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration,  thanks.");
