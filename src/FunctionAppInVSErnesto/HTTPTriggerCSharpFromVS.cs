@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using Microsoft.Extensions.Hosting;
+
 namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/es-mx/azure/azure-app-configuration/quickstart-azure-functions-csharp
 // https://docs.microsoft.com/en-us/azure/azure-app-configuration/howto-integrate-azure-managed-service-identity?tabs=core3x
@@ -35,11 +37,16 @@ namespace FunctionAppInVSErnesto
             {
                 builder.AddAzureAppConfiguration(options =>
                 {
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential())
-                        .ConfigureRefresh(refreshOptions =>
-                            refreshOptions.Register("TestApp:Settings:Message")
-                                .SetCacheExpiration(TimeSpan.FromSeconds(30))
-                        );
+                    options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
+                        .ConfigureKeyVault(kv =>
+                        {
+                            kv.SetCredential(new DefaultAzureCredential());
+                        });
+
+                        //.ConfigureRefresh(refreshOptions =>
+                        //    refreshOptions.Register("TestApp:Settings:Message")
+                        //        .SetCacheExpiration(TimeSpan.FromSeconds(30))
+                        //);
                     ConfigurationRefresher = options.GetRefresher();
                 });
             }
