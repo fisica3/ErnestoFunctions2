@@ -57,7 +57,7 @@ namespace FunctionAppInVSErnesto
         [FunctionName("HTTPTriggerCSharpFromVS")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("El trigger HTTP con C#, proceso un request.");
 
             if (!isLocal) await ConfigurationRefresher.RefreshAsync();
             string keyName =  "claveSQL";//"TestApp:Settings:Message";//
