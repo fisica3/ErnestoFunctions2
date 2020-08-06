@@ -37,16 +37,16 @@ namespace FunctionAppInVSErnesto
             {
                 builder.AddAzureAppConfiguration(options =>
                 {
+                //                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential())
                     options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
                         .ConfigureKeyVault(kv =>
                         {
                             kv.SetCredential(new DefaultAzureCredential());
-                        });
-
-                        //.ConfigureRefresh(refreshOptions =>
-                        //    refreshOptions.Register("TestApp:Settings:Message")
-                        //        .SetCacheExpiration(TimeSpan.FromSeconds(30))
-                        //);
+                        })
+                        .ConfigureRefresh(refreshOptions =>
+                            refreshOptions.Register("TestApp:Settings:Message")
+                                .SetCacheExpiration(TimeSpan.FromSeconds(30))
+                        );
                     ConfigurationRefresher = options.GetRefresher();
                 });
             }
@@ -60,7 +60,7 @@ namespace FunctionAppInVSErnesto
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
 
             if (!isLocal) await ConfigurationRefresher.RefreshAsync();
-            string keyName =  "claveSQL";//"TestApp:Settings:Message";//
+            string keyName =  "TestApp:Settings:Message";//"claveSQL";//
             string message = Configuration[keyName];
             return message != null
                 ? (ActionResult)new OkObjectResult($"El valor recuperado de keyvault fue '{message}'")
