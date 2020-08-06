@@ -20,12 +20,12 @@ namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/en-us/azure/key-vault/general/managed-identity
 // https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-key-vault-references-dotnet-core?tabs=cmd%2Ccore2x
 {
-    public static class HttpTriggerCSharpFromVs
+    public static class TestAppConfig
     {
         private static IConfiguration Configuration { set; get; }
         private static IConfigurationRefresher ConfigurationRefresher { set; get; }
         private static bool isLocal;
-        static HttpTriggerCSharpFromVs()
+        static TestAppConfig()
         {
             var builder = new ConfigurationBuilder();
             isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
