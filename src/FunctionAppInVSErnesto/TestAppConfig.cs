@@ -54,7 +54,7 @@ namespace FunctionAppInVSErnesto
             Configuration = builder.Build();
         }
 
-        [FunctionName("HTTPTriggerCSharpFromVS")]
+        [FunctionName("TestAppConfig")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
