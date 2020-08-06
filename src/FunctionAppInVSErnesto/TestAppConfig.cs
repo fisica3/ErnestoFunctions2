@@ -37,8 +37,8 @@ namespace FunctionAppInVSErnesto
             {
                 builder.AddAzureAppConfiguration(options =>
                 {
-                //                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential())
-                    options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
+                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
+                //    options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
                         .ConfigureKeyVault(kv =>
                         {
                             kv.SetCredential(new DefaultAzureCredential());
@@ -63,7 +63,7 @@ namespace FunctionAppInVSErnesto
             string keyName =  "TestApp:Settings:Message";//"claveSQL";//
             string message = Configuration[keyName];
             return message != null
-                ? (ActionResult)new OkObjectResult($"El valor recuperado de keyvault fue '{message}'")
+                ? (ActionResult)new OkObjectResult($"El valor recuperado de AppConfig fue '{message}'")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
     }
