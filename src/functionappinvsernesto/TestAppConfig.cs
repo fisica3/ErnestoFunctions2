@@ -60,7 +60,7 @@ namespace FunctionAppInVSErnesto
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
 
             if (!isLocal) await ConfigurationRefresher.RefreshAsync();
-            string keyName =  "TestApp:Settings:Message";//"claveSQL";//
+            string keyName =  "TestApp:Settings:Message";
             string message = Configuration[keyName];
             return message != null
                 ? (ActionResult)new OkObjectResult($"El valor recuperado de AppConfig fue '{message}', integracion OK")
