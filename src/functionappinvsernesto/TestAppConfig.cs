@@ -31,7 +31,7 @@ namespace FunctionAppInVSErnesto
             isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
             if (isLocal)
             {
-                builder.AddAzureAppConfiguration(Environment.GetEnvironmentVariable("KeyConnectionString"));
+                builder.AddAzureAppConfiguration(Environment.GetEnvironmentVariable("KeyConnectionString"));                
             }
             else
             {

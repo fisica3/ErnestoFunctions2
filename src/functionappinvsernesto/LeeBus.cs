@@ -23,7 +23,7 @@ namespace FunctionAppInVSErnesto
             else
             {
                 builder.AddAzureAppConfiguration(options =>
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("Endpoint")), new ManagedIdentityCredential()));
+                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential()));
             }
             Configuration = builder.Build();
             
