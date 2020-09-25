@@ -9,11 +9,11 @@ trigger:
 resources:
   pipelines:
   - pipeline: functionsorigin   # Name of the pipeline resource
-    source: ErnestoFunctions # Name of the triggering pipeline
+    source: FunctionsFirstPhase # Name of the triggering pipeline
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'Sponsorship for Functions'
+  azureSubscription: 'EnlaceRG_Functions04'
 
   # Function app name
   functionAppNameDev: 'democnp03'

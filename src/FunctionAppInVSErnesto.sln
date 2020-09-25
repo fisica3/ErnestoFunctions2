@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionAppInVSErnesto", "FunctionAppInVSErnesto\FunctionAppInVSErnesto.csproj", "{F5609817-47B3-4B67-992A-AF653A5A3F16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionAppInVSErnesto", "functionappinvsernesto\FunctionAppInVSErnesto.csproj", "{F5609817-47B3-4B67-992A-AF653A5A3F16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
