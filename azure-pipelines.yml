@@ -78,7 +78,7 @@ stages:
 
 - stage: DeployDev
   displayName: Deploy DEV
-  dependsOn: Build
+  dependsOn: Test
   condition: succeeded()
 
   jobs:
