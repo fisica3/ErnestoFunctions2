@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -24,7 +25,7 @@ namespace FunctionAppInVSErnesto
             if (shareName != null && fileName!=null)
             {
                 log.LogInformation($"OJO!! El nombre del Share es: {shareName}, y el nombre de file es {fileName}");
-                var connectionString = "DefaultEndpointsProtocol=https;AccountName=sgdemofunctions049db1;AccountKey=v2VH1EexsBO7LK2O5FFcziWJInXFQ79olIw8dp3cw64k71c1V7z5UiXLrUZULOXXtw1Q7mt5J6SonxeM1zOCkA==;EndpointSuffix=core.windows.net";
+                var connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
                 DownloadAndCopy(connectionString,shareName, fileName, log);
                 return (ActionResult)new OkObjectResult($"Hello, {shareName}");
             }
