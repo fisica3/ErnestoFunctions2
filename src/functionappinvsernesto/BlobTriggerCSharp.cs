@@ -43,7 +43,7 @@ namespace FunctionAppInVSErnesto
             var connectionTarget = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
             string keyName = "CopyPrefix";
             string prefix = Configuration[keyName];
-            log.LogInformation($"***Lab*****C# Blob trigger function Processed blob\n Name:{name} \n Size: {myBlob.Length} Bytes");
+            log.LogInformation($"***Lab*****Función disparada por cambio en blob \n Name:{name} \n Size: {myBlob.Length} Bytes");
             if (name.Contains(".svg"))
             {
                 BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, folderTarget);
