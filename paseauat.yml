@@ -27,7 +27,7 @@ stages:
   jobs:
   - deployment: JDeployUat
     displayName: Job Deploy Uat
-    environment: 'envuat'
+    environment: 'envuat2'
     pool:
       vmImage: $(vmImageName)
     strategy:
