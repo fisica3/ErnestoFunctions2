@@ -7,3 +7,4 @@ Para usar este material se requiere: una suscripción en Azure y una organizacio
 Mas detalles en www.consultorinternet.com
 
 [![Build Status](https://dev.azure.com/fisica3/Functions%20v2/_apis/build/status/PaseaUAT2?branchName=master)](https://dev.azure.com/fisica3/Functions%20v2/_build/latest?definitionId=108&branchName=master)
+https://dev.azure.com/fisica3/Functions%20v2/_apis/build/status/PaseaUAT2?branchName=master
