@@ -64,7 +64,7 @@ namespace FunctionAppInVSErnesto
             string keyName =  "TestApp:Settings:Message";
             string message = Configuration[keyName];
             return message != null
-                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', el proceso salio OK")
+                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', el proceso salio OK en IBK")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
     }
