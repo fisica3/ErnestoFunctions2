@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using Microsoft.Extensions.Hosting;
+
 
 namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/es-mx/azure/azure-app-configuration/quickstart-azure-functions-csharp
@@ -20,49 +20,58 @@ namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/en-us/azure/key-vault/general/managed-identity
 // https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-key-vault-references-dotnet-core?tabs=cmd%2Ccore2x
 {
-    public static class TestAppConfig
+    public  class TestAppConfig
     {
-        private static IConfiguration Configuration { set; get; }
-        private static IConfigurationRefresher ConfigurationRefresher { set; get; }
+        //private static IConfiguration Configuration { set; get; }
+        //private static IConfigurationRefresher ConfigurationRefresher { set; get; }
         private static bool isLocal;
-        static TestAppConfig()
-        {
-            var builder = new ConfigurationBuilder();
-            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
-            if (isLocal)
-            {
-                var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
-                builder.AddAzureAppConfiguration(appConfLocal);                
-            }
-            else
-            {
-                builder.AddAzureAppConfiguration(options =>
-                {
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
-                //    options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
-                        .ConfigureKeyVault(kv =>
-                        {
-                            kv.SetCredential(new DefaultAzureCredential());
-                        })
-                        .ConfigureRefresh(refreshOptions =>
-                            refreshOptions.Register("TestApp:Settings:Message")
-                                .SetCacheExpiration(TimeSpan.FromSeconds(30))
-                        );
-                    ConfigurationRefresher = options.GetRefresher();
-                });
-            }
 
-            Configuration = builder.Build();
-        }
+        private readonly IConfiguration _configuration;
+        private IConfigurationRefresher _configurationRefresher;
+
+        //public TestAppConfig(IConfiguration configuration, IConfigurationRefresher configurationRefresher)
+        //{
+        //    _configuration = configuration;
+        //    _configurationRefresher = configurationRefresher;// refresherProvider.Refreshers.First();
+        //}
+        public TestAppConfig()
+         {
+             var builder = new ConfigurationBuilder();
+             isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+             if (isLocal)
+             {
+                 var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
+                 builder.AddAzureAppConfiguration(appConfLocal);                
+             }
+             else
+             {
+                 builder.AddAzureAppConfiguration(options =>
+                 {
+                     options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
+                 //    options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
+                         .ConfigureKeyVault(kv =>
+                         {
+                             kv.SetCredential(new DefaultAzureCredential());
+                         })
+                         .ConfigureRefresh(refreshOptions =>
+                             refreshOptions.Register("TestApp:Settings:Message")
+                                 .SetCacheExpiration(TimeSpan.FromSeconds(30))
+                         );
+                     _configurationRefresher = options.GetRefresher();
+                 });
+             }
+
+            _configuration = builder.Build();
+         } 
 
         [FunctionName("TestAppConfig")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
 
-            if (!isLocal) await ConfigurationRefresher.RefreshAsync();
-            string keyName =  "TestApp:Settings:Message";
-            string message = Configuration[keyName];
+            if (!isLocal) await _configurationRefresher.RefreshAsync();
+            string keyName =  "TestApp:Settings:Message02";
+            string message = _configuration[keyName];
             return message != null
                 ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', se integro OK")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
