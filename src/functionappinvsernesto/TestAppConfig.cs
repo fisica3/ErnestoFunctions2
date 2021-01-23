@@ -68,12 +68,18 @@ namespace FunctionAppInVSErnesto
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
-
-            if (!isLocal) await _configurationRefresher.RefreshAsync();
+            string keyVaultEntry = "proxymusk";
+            string messageKeyVault = "keyvault es local";
+            if (!isLocal)
+            {
+                await _configurationRefresher.RefreshAsync();
+                messageKeyVault = _configuration[keyVaultEntry];
+            }
             string keyName =  "TestApp:Settings:Message02";
             string message = _configuration[keyName];
+            
             return message != null
-                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', el proceso salio OK en IBK")
+                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' el proceso salio OK en IBK")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
     }
