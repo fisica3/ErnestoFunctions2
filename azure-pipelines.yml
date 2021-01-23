@@ -11,7 +11,7 @@ variables:
   azureSubscription: 'EnlaceRG_Functions04'
 
   # Function app name
-  functionAppNameDev: 'democnp03'
+  functionAppNameDev: 'devconsumption01'
   functionAppNameUat: 'demofunctions04'
   # Agent VM image name
   vmImageName: 'windows-2019'
@@ -99,6 +99,6 @@ stages:
               appName: '$(functionAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               deploymentMethod: 'zipDeploy'
-          - script: echo "Hola Cuarentena Nights, este es un mensaje de prueba "
+          - script: echo "Hola Comunidad, este es un mensaje de prueba "
             displayName: 'Step Test Dev (msg)'    
 
