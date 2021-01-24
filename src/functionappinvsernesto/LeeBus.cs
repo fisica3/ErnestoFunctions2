@@ -18,12 +18,20 @@ namespace FunctionAppInVSErnesto
 
             if (isLocal)
             {
-                builder.AddAzureAppConfiguration(Environment.GetEnvironmentVariable("KeyConnectionString"));
+                var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
+                builder.AddAzureAppConfiguration(appConfLocal);
             }
             else
             {
                 builder.AddAzureAppConfiguration(options =>
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential()));
+                {
+                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
+                    .ConfigureKeyVault(kv =>
+                    {
+                        kv.SetCredential(new DefaultAzureCredential());
+                    });
+                  //  ConfigurationRefresher = options.GetRefresher();
+                });
             }
             Configuration = builder.Build();
             
