@@ -79,7 +79,7 @@ namespace FunctionAppInVSErnesto
             string message = _configuration[keyName];
             
             return message != null
-                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' el proceso salio OK en IBK")
+                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' el proceso salio OK en el Video")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
     }
