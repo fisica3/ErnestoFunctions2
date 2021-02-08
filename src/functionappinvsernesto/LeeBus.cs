@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Azure.Identity;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
+
 namespace FunctionAppInVSErnesto
 {
     public static class LeeBus

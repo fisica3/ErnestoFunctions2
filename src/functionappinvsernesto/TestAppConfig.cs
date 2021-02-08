@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
 
 namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/es-mx/azure/azure-app-configuration/quickstart-azure-functions-csharp

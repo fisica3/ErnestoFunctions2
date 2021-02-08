@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Identity;
 using System.IO;
 using Microsoft.FeatureManagement;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
+
 //https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-azure-functions-csharp
 
 [assembly: FunctionsStartup(typeof(FunctionAppInVSErnesto.Startup))]
