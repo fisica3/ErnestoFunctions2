@@ -5,8 +5,6 @@ using Microsoft.Extensions.Logging;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Azure.Identity;
-using Microsoft.Extensions.Configuration.EnvironmentVariables;
-
 namespace FunctionAppInVSErnesto
 {
     public static class LeeBus
@@ -45,7 +43,6 @@ namespace FunctionAppInVSErnesto
             }*/
             
         }
-        //Usando Referencias KeyVault https://docs.microsoft.com/en-us/azure/app-service/app-service-key-vault-references 
         [FunctionName("LeeBus")]
         public static void Run([ServiceBusTrigger("ejemploacp", "Medellin", Connection = "ejemplobus2000")]Message mySbMsg, ILogger log)
         {

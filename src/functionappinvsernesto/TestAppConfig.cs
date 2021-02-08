@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using Microsoft.Extensions.Configuration.EnvironmentVariables;
+
 
 namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/es-mx/azure/azure-app-configuration/quickstart-azure-functions-csharp
@@ -29,21 +29,12 @@ namespace FunctionAppInVSErnesto
         private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
 
-        /*public Function1(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        } */
-
         //public TestAppConfig(IConfiguration configuration, IConfigurationRefresher configurationRefresher)
         //{
         //    _configuration = configuration;
         //    _configurationRefresher = configurationRefresher;// refresherProvider.Refreshers.First();
         //}
-        public TestAppConfig(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-        public void xxxxxTestAppConfig()
+        public TestAppConfig()
          {
              var builder = new ConfigurationBuilder();
              isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
@@ -56,9 +47,8 @@ namespace FunctionAppInVSErnesto
              {
                  builder.AddAzureAppConfiguration(options =>
                  {
-                     //Rol Requerido para AppConfiguration: App Configuration Data Reader
-                     //Rol Requerido para KeyVault: Key Vault Secrets User
                      options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
+                 //    options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
                          .ConfigureKeyVault(kv =>
                          {
                              kv.SetCredential(new DefaultAzureCredential());
@@ -71,7 +61,7 @@ namespace FunctionAppInVSErnesto
                  });
              }
 
-           // _configuration = builder.Build();
+            _configuration = builder.Build();
          } 
 
         [FunctionName("TestAppConfig")]

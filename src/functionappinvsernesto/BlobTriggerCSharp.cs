@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Storage.Blobs;
-using Microsoft.Extensions.Configuration.EnvironmentVariables;
 
 namespace FunctionAppInVSErnesto
 {    public static class BlobTriggerCSharp
