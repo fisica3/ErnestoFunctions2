@@ -9,6 +9,8 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Identity;
 using System.IO;
+using Microsoft.FeatureManagement;
+//https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-azure-functions-csharp
 
 [assembly: FunctionsStartup(typeof(FunctionAppInVSErnesto.Startup))]
 
@@ -20,47 +22,84 @@ namespace FunctionAppInVSErnesto
     public class Startup : FunctionsStartup
     {
         public IConfigurationRefresher ConfigurationRefresher { get; private set; }
-
-        public override void Configure(IFunctionsHostBuilder hostBuilder)
+        private static bool isLocal;
+        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         {
-            if (ConfigurationRefresher!=null)
+            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+            if (isLocal)
             {
-                hostBuilder.Services.AddSingleton(ConfigurationRefresher);
+                var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
+                builder.ConfigurationBuilder.AddAzureAppConfiguration(appConfLocal);
             }
-        }
-        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder configurationBuilder)
-        {
-            var hostBuilderContext = configurationBuilder.GetContext();
-            var isDevelopment = ("Development" == hostBuilderContext.EnvironmentName);
-
-            if (isDevelopment)
+            else
             {
-                configurationBuilder.ConfigurationBuilder
-                    .AddJsonFile(Path.Combine(hostBuilderContext.ApplicationRootPath, $"appsettings.{hostBuilderContext.EnvironmentName}.json"), optional: true, reloadOnChange: false)
-                    .AddUserSecrets<Startup>(optional: true, reloadOnChange: false);
-            }
+                string cs = Environment.GetEnvironmentVariable("EndpointURL");
+                //builder.ConfigurationBuilder.AddAzureAppConfiguration(cs);
 
-            var configuration = configurationBuilder.ConfigurationBuilder.Build();
-            var applicationConfigurationEndpoint = configuration["APPLICATIONCONFIGURATION_ENDPOINT"];
-
-            if (!string.IsNullOrEmpty(applicationConfigurationEndpoint))
-            {
-                configurationBuilder.ConfigurationBuilder.AddAzureAppConfiguration(appConfigOptions => {
-                    var azureCredential = new DefaultAzureCredential(includeInteractiveCredentials: false);
-
-                    appConfigOptions
-                        .Connect(new Uri(applicationConfigurationEndpoint), azureCredential)
-                        .ConfigureKeyVault(keyVaultOptions => {
-                            keyVaultOptions.SetCredential(azureCredential);
-                        })
-                        .ConfigureRefresh(refreshOptions => {
-                            refreshOptions.Register(key: "TestApp:Settings:Message", label: LabelFilter.Null, refreshAll: true);
-                            refreshOptions.SetCacheExpiration(TimeSpan.FromSeconds(30));
+                builder.ConfigurationBuilder.AddAzureAppConfiguration(options =>
+                {
+                //Rol Requerido para AppConfiguration: App Configuration Data Reader
+                //Rol Requerido para KeyVault: Key Vault Secrets User
+                options.Connect(new Uri(cs), new ManagedIdentityCredential())
+                        .ConfigureKeyVault(kv =>
+                        {
+                            kv.SetCredential(new DefaultAzureCredential());
                         });
-
-                    ConfigurationRefresher = appConfigOptions.GetRefresher();
-                });
+                //_configurationRefresher = options.GetRefresher();
+            });
             }
         }
+
+        /*  public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
+          {
+              builder.ConfigurationBuilder.AddAzureAppConfiguration(options =>
+              {
+                  options.Connect(Environment.GetEnvironmentVariable("ConnectionString"))
+                         .Select("_")
+                         .UseFeatureFlags();
+              });
+          } */
+
+        /*
+                public TestAppConfig()
+                 {
+                     var builder = new ConfigurationBuilder();
+                     isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+                     if (isLocal)
+                     {
+                         var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
+                         builder.AddAzureAppConfiguration(appConfLocal);                
+                     }
+                     else
+                     {
+                         builder.AddAzureAppConfiguration(options =>
+                         {
+                             //Rol Requerido para AppConfiguration: App Configuration Data Reader
+                             //Rol Requerido para KeyVault: Key Vault Secrets User
+                             options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
+                                 .ConfigureKeyVault(kv =>
+                                 {
+                                     kv.SetCredential(new DefaultAzureCredential());
+                                 });
+                             _configurationRefresher = options.GetRefresher();
+                         });
+                     }
+
+                    _configuration = builder.Build();
+                 }  
+
+
+
+         */
+
+
+
+
+        public override void Configure(IFunctionsHostBuilder builder)
+        {
+            //builder.Services.AddAzureAppConfiguration();
+            //builder.Services.AddFeatureManagement();
+        }
+
     }
 }
