@@ -15,21 +15,21 @@ namespace FunctionAppInVSErnesto
 {
     public class LeeBus
     {
-        //private static IConfiguration Configuration { set; get; }
+        private static IConfiguration _configuration { set; get; }
         private static bool isLocal;
         private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
-        private readonly IConfiguration _configuration;
+       // private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
 
-        public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
+        /*public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
         {
             isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
             _configuration = configuration;
             _featureManagerSnapshot = featureManagerSnapshot;
             _configurationRefresher = refresherProvider.Refreshers.First();
 
-        }
-        /* static LeeBus()
+        }*/
+        static LeeBus()
         {
             var builder = new ConfigurationBuilder();
             bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
@@ -51,22 +51,22 @@ namespace FunctionAppInVSErnesto
                   //  ConfigurationRefresher = options.GetRefresher();
                 });
             }
-            Configuration = builder.Build();
-            
-           // catch (CredentialUnavailableException e)
-           // {
-           //     builder = new ConfigurationBuilder();
-           //     
-                Configuration = builder.Build();
-           // }
+            _configuration = builder.Build();
 
-    } */
+            // catch (CredentialUnavailableException e)
+            // {
+            //     builder = new ConfigurationBuilder();
+                 
+            //_configuration = builder.Build();
+            //}
+
+    } 
 
         [FunctionName("LeeBus")]
         public void Run([ServiceBusTrigger("ejemploacp", "Medellin", Connection = "ejemplobus2000")]Message mySbMsg, ILogger log)
         {
             log.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg.MessageId}");
-            _configurationRefresher.RefreshAsync();
+            //_configurationRefresher.RefreshAsync();
             string keyName = "TestApp:Settings:Message02";
             string message = _configuration[keyName];
 
