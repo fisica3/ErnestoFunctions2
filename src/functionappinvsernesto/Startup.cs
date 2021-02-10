@@ -1,14 +1,11 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.Azure.Services.AppAuthentication;
+﻿using System;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using System.Text;
-using System;
-using System.Reflection;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Identity;
-using System.IO;
+using Microsoft.FeatureManagement;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+
 
 [assembly: FunctionsStartup(typeof(FunctionAppInVSErnesto.Startup))]
 
@@ -19,48 +16,55 @@ namespace FunctionAppInVSErnesto
     //private static bool isLocal;
     public class Startup : FunctionsStartup
     {
+        private static bool isLocal;
         public IConfigurationRefresher ConfigurationRefresher { get; private set; }
 
-        public override void Configure(IFunctionsHostBuilder hostBuilder)
+        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         {
-            if (ConfigurationRefresher!=null)
+            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+            if (isLocal)
             {
-                hostBuilder.Services.AddSingleton(ConfigurationRefresher);
-            }
-        }
-        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder configurationBuilder)
-        {
-            var hostBuilderContext = configurationBuilder.GetContext();
-            var isDevelopment = ("Development" == hostBuilderContext.EnvironmentName);
-
-            if (isDevelopment)
-            {
-                configurationBuilder.ConfigurationBuilder
-                    .AddJsonFile(Path.Combine(hostBuilderContext.ApplicationRootPath, $"appsettings.{hostBuilderContext.EnvironmentName}.json"), optional: true, reloadOnChange: false)
-                    .AddUserSecrets<Startup>(optional: true, reloadOnChange: false);
-            }
-
-            var configuration = configurationBuilder.ConfigurationBuilder.Build();
-            var applicationConfigurationEndpoint = configuration["APPLICATIONCONFIGURATION_ENDPOINT"];
-
-            if (!string.IsNullOrEmpty(applicationConfigurationEndpoint))
-            {
-                configurationBuilder.ConfigurationBuilder.AddAzureAppConfiguration(appConfigOptions => {
-                    var azureCredential = new DefaultAzureCredential(includeInteractiveCredentials: false);
-
-                    appConfigOptions
-                        .Connect(new Uri(applicationConfigurationEndpoint), azureCredential)
-                        .ConfigureKeyVault(keyVaultOptions => {
-                            keyVaultOptions.SetCredential(azureCredential);
-                        })
-                        .ConfigureRefresh(refreshOptions => {
-                            refreshOptions.Register(key: "TestApp:Settings:Message", label: LabelFilter.Null, refreshAll: true);
-                            refreshOptions.SetCacheExpiration(TimeSpan.FromSeconds(30));
-                        });
-
-                    ConfigurationRefresher = appConfigOptions.GetRefresher();
+                var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
+                builder.ConfigurationBuilder.AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(appConfLocal)
+                            .ConfigureRefresh(refreshOptions =>
+                             refreshOptions.Register("TestApp:Settings:Message02")
+                                 .SetCacheExpiration(TimeSpan.FromSeconds(30))
+                                 )
+                            .UseFeatureFlags(featureFlagOptions => {
+                                featureFlagOptions.CacheExpirationInterval = TimeSpan.FromSeconds(20);
+                            });
                 });
             }
+            else
+            {
+                string cs = Environment.GetEnvironmentVariable("EndpointURL");
+                builder.ConfigurationBuilder.AddAzureAppConfiguration(options =>
+                {
+                    //Rol Requerido para AppConfiguration: App Configuration Data Reader
+                    //Rol Requerido para KeyVault: Key Vault Secrets User
+                    options.Connect(new Uri(cs), new ManagedIdentityCredential())
+                            .ConfigureKeyVault(kv =>
+                            {
+                                kv.SetCredential(new DefaultAzureCredential());
+                            })
+                            .ConfigureRefresh(refreshOptions =>
+                             refreshOptions.Register("TestApp:Settings:Message")
+                                 .SetCacheExpiration(TimeSpan.FromSeconds(30))
+                                 );
+                });
+            }
+        }
+
+        public override void Configure(IFunctionsHostBuilder builder)
+        {
+            if (ConfigurationRefresher != null)
+            {
+                builder.Services.AddSingleton(ConfigurationRefresher);
+            }
+            builder.Services.AddAzureAppConfiguration();
+            builder.Services.AddFeatureManagement();
         }
     }
 }

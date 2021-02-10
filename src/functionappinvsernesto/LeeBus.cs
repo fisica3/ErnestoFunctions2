@@ -5,13 +5,31 @@ using Microsoft.Extensions.Logging;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Azure.Identity;
+using Microsoft.FeatureManagement;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
 namespace FunctionAppInVSErnesto
 {
-    public static class LeeBus
+    public class LeeBus
     {
-        private static IConfiguration Configuration { set; get; }
-        
-        static LeeBus()
+        //private static IConfiguration Configuration { set; get; }
+        private static bool isLocal;
+        private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
+        private readonly IConfiguration _configuration;
+        private IConfigurationRefresher _configurationRefresher;
+
+        public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
+        {
+            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+            _configuration = configuration;
+            _featureManagerSnapshot = featureManagerSnapshot;
+            _configurationRefresher = refresherProvider.Refreshers.First();
+
+        }
+        /* static LeeBus()
         {
             var builder = new ConfigurationBuilder();
             bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
@@ -35,21 +53,22 @@ namespace FunctionAppInVSErnesto
             }
             Configuration = builder.Build();
             
-           /* catch (CredentialUnavailableException e)
-            {
-                builder = new ConfigurationBuilder();
-                
+           // catch (CredentialUnavailableException e)
+           // {
+           //     builder = new ConfigurationBuilder();
+           //     
                 Configuration = builder.Build();
-            }*/
-            
-        }
+           // }
+
+    } */
+
         [FunctionName("LeeBus")]
-        public static void Run([ServiceBusTrigger("ejemploacp", "Medellin", Connection = "ejemplobus2000")]Message mySbMsg, ILogger log)
+        public void Run([ServiceBusTrigger("ejemploacp", "Medellin", Connection = "ejemplobus2000")]Message mySbMsg, ILogger log)
         {
             log.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg.MessageId}");
-
-            string keyName = "TestApp:Settings:Message";
-            string message = Configuration[keyName];
+            _configurationRefresher.RefreshAsync();
+            string keyName = "TestApp:Settings:Message02";
+            string message = _configuration[keyName];
 
             var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");

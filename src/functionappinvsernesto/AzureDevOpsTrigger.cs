@@ -1,7 +1,7 @@
-
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
+using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -12,13 +12,13 @@ namespace FunctionAppInVSErnesto
     public static class AzureDevOpsTrigger
     {
         [FunctionName("AzureDevOpsTrigger")]
-        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request from Azure DevOps.");
 
             string name = req.Query["name"];
 
-            string requestBody = new StreamReader(req.Body).ReadToEnd();
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 

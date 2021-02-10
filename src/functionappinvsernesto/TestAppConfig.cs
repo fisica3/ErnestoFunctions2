@@ -1,17 +1,15 @@
-
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Azure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using Microsoft.FeatureManagement;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-
 
 namespace FunctionAppInVSErnesto
 // https://docs.microsoft.com/es-mx/azure/azure-app-configuration/quickstart-azure-functions-csharp
@@ -25,46 +23,20 @@ namespace FunctionAppInVSErnesto
         //private static IConfiguration Configuration { set; get; }
         //private static IConfigurationRefresher ConfigurationRefresher { set; get; }
         private static bool isLocal;
-
+        private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
         private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
 
-        //public TestAppConfig(IConfiguration configuration, IConfigurationRefresher configurationRefresher)
-        //{
-        //    _configuration = configuration;
-        //    _configurationRefresher = configurationRefresher;// refresherProvider.Refreshers.First();
-        //}
-        public TestAppConfig()
-         {
-             var builder = new ConfigurationBuilder();
-             isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
-             if (isLocal)
-             {
-                 var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
-                 builder.AddAzureAppConfiguration(appConfLocal);                
-             }
-             else
-             {
-                 builder.AddAzureAppConfiguration(options =>
-                 {
-                     options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
-                 //    options.Connect(Environment.GetEnvironmentVariable("Endpoint"))
-                         .ConfigureKeyVault(kv =>
-                         {
-                             kv.SetCredential(new DefaultAzureCredential());
-                         })
-                         .ConfigureRefresh(refreshOptions =>
-                             refreshOptions.Register("TestApp:Settings:Message")
-                                 .SetCacheExpiration(TimeSpan.FromSeconds(30))
-                         );
-                     _configurationRefresher = options.GetRefresher();
-                 });
-             }
+        public TestAppConfig(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
+        {
+            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+            _configuration = configuration;
+            _featureManagerSnapshot = featureManagerSnapshot;
+            _configurationRefresher = refresherProvider.Refreshers.First();
 
-            _configuration = builder.Build();
-         } 
+        }
 
-        [FunctionName("TestAppConfig")]
+    [FunctionName("TestAppConfig")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
@@ -79,7 +51,7 @@ namespace FunctionAppInVSErnesto
             string message = _configuration[keyName];
             
             return message != null
-                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' el proceso salio OK en IBK")
+                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' el proceso salio OK en Video")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
     }
