@@ -17,6 +17,7 @@ namespace FunctionAppInVSErnesto
     {
         private static IConfiguration _configuration { set; get; }
         private static bool isLocal;
+        private static string connString;
         private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
        // private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
@@ -33,7 +34,7 @@ namespace FunctionAppInVSErnesto
         {
             var builder = new ConfigurationBuilder();
             bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
-
+            connString = Environment.GetEnvironmentVariable("SqlServerConnection");
             if (isLocal)
             {
                 var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
@@ -72,6 +73,42 @@ namespace FunctionAppInVSErnesto
 
             var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");
+            var fechaEmision = mySbMsg.ScheduledEnqueueTimeUtc.ToLocalTime();
+            grabaItemCola(mySbMsg.MessageId, content, fechaEmision, log);
+        }
+
+        public void grabaItemCola(string messageId, string message, DateTime fechaEmision, ILogger log)
+        {
+            var item = new Model.ItemCola
+            {
+                Message = message,
+                MessageId = messageId,
+                FechaEmision = fechaEmision,
+                FechaHoraRecepcion = System.DateTime.Now
+            };
+            try
+            {
+                using (var db = new AppDbContext(connString))
+                {
+                   /* db.Database.EnsureDeleted();*/
+                    db.Database.EnsureCreated();
+                    db.ItemColas.Add(item);
+                    db.SaveChanges();
+                    /*  if (!db.Books.Any())
+                      {
+                          WriteTestData(db);
+                          Console.WriteLine("Seeded database");
+                      }*/
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                    throw;
+            }
+
+
+
         }
     }
 }
