@@ -19,6 +19,7 @@ variables:
   # Function app name
   functionAppNameDev: 'democnp03'
   functionAppNameUat: 'demofunctions04'
+  functionAppNameProd: 'prodpremium01'
   # Agent VM image name
   vmImageName: 'windows-2019'
 
