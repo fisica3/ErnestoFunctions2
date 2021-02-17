@@ -74,7 +74,7 @@ stages:
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
             inputs:
-              azureSubscription: '$(azureSubscription)'
+              azureSubscription: 'EnlaceRG_PremiumTemporal'
               appType: 'functionApp'
               appName: '$(functionAppNameProd)'              
               package: '$(Pipeline.Workspace)/functionsorigin/drop/$(resources.pipeline.functionsorigin.runID).zip'
