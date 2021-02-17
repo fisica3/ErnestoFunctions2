@@ -54,4 +54,28 @@ stages:
               appType: 'functionApp'
               appName: '$(functionAppNameUat)'              
               package: '$(Pipeline.Workspace)/functionsorigin/drop/$(resources.pipeline.functionsorigin.runID).zip'
-              deploymentMethod: 'zipDeploy'              
+              deploymentMethod: 'zipDeploy'   
+                        
+- stage: DeployPROD
+  displayName: Deploy PROD
+  jobs:
+  - deployment: JDeployProd
+    displayName: Job Deploy Prod
+    environment: 'envprod'
+    pool:
+      vmImage: $(vmImageName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: ls '$(Pipeline.Workspace)/functionsorigin/drop/'
+          - script: echo $(resources.pipeline.functionsorigin.runID)
+         
+          - task: AzureFunctionApp@1
+            displayName: 'Azure functions app deploy'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              appType: 'functionApp'
+              appName: '$(functionAppNameProd)'              
+              package: '$(Pipeline.Workspace)/functionsorigin/drop/$(resources.pipeline.functionsorigin.runID).zip'
+              deploymentMethod: 'zipDeploy'  
