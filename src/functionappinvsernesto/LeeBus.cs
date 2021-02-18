@@ -7,9 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Azure.Identity;
 using Microsoft.FeatureManagement;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FunctionAppInVSErnesto
 {
