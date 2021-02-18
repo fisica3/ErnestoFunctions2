@@ -64,16 +64,18 @@ namespace FunctionAppInVSErnesto
     } 
 
         [FunctionName("LeeBus")]
-        public void Run([ServiceBusTrigger("ejemploacp", "Medellin", Connection = "ejemplobus2000")]Message mySbMsg, ILogger log)
+        public void Run([ServiceBusTrigger(
+                topicName: "%MiLeeBus.Topic%",
+                subscriptionName: "%MiLeeBus.Subscription%",
+                Connection = "MiLeeBus.Connection")]Message mySbMsg, ILogger log)
         {
             log.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg.MessageId}");
             //_configurationRefresher.RefreshAsync();
             string keyName = "TestApp:Settings:Message02";
-            string message = _configuration[keyName];
-
+            string message = _configuration[keyName];            
             var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");
-            var fechaEmision = mySbMsg.ScheduledEnqueueTimeUtc.ToLocalTime();
+            var fechaEmision = mySbMsg.SystemProperties.EnqueuedTimeUtc.ToLocalTime();
             grabaItemCola(mySbMsg.MessageId, content, fechaEmision, log);
         }
 
