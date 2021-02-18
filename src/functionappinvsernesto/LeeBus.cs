@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Azure.Identity;
 using Microsoft.FeatureManagement;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using System.Linq;
 
 namespace FunctionAppInVSErnesto
 {
@@ -19,15 +20,15 @@ namespace FunctionAppInVSErnesto
        // private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
 
-        /*public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
+        public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
         {
-            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));            
             _configuration = configuration;
             _featureManagerSnapshot = featureManagerSnapshot;
             _configurationRefresher = refresherProvider.Refreshers.First();
-
-        }*/
-        static LeeBus()
+            connString = Environment.GetEnvironmentVariable("SqlServerConnection");
+        }
+ /*       static LeeBus()
         {
             var builder = new ConfigurationBuilder();
             bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
@@ -58,7 +59,7 @@ namespace FunctionAppInVSErnesto
             //_configuration = builder.Build();
             //}
 
-    } 
+    }  */
 
         [FunctionName("LeeBus")]
         public void Run([ServiceBusTrigger(
@@ -67,12 +68,11 @@ namespace FunctionAppInVSErnesto
                 Connection = "MiLeeBus.Connection")]Message mySbMsg, ILogger log)
         {
             log.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg.MessageId}");
-            //_configurationRefresher.RefreshAsync();
             string keyName = "TestApp:Settings:Message02";
             string message = _configuration[keyName];            
             var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");
-            var fechaEmision = mySbMsg.SystemProperties.EnqueuedTimeUtc.ToLocalTime();
+            var fechaEmision = mySbMsg.SystemProperties.EnqueuedTimeUtc.ToLocalTime();            
             grabaItemCola(mySbMsg.MessageId, content, fechaEmision, log);
         }
 
