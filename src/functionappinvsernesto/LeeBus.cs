@@ -20,13 +20,44 @@ namespace FunctionAppInVSErnesto
        // private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
 
-        public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
+        /* public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
+         {
+             isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));            
+             _configuration = configuration;
+             _featureManagerSnapshot = featureManagerSnapshot;
+             _configurationRefresher = refresherProvider.Refreshers.First();
+             connString = Environment.GetEnvironmentVariable("SqlServerConnection");
+         } */
+
+        static LeeBus()
         {
-            isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));            
-            _configuration = configuration;
-            _featureManagerSnapshot = featureManagerSnapshot;
-            _configurationRefresher = refresherProvider.Refreshers.First();
+            var builder = new ConfigurationBuilder();
+            bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
             connString = Environment.GetEnvironmentVariable("SqlServerConnection");
+            if (isLocal)
+            {
+                var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
+                builder.AddAzureAppConfiguration(appConfLocal);
+            }
+            else
+            {
+                builder.AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
+                    .ConfigureKeyVault(kv =>
+                    {
+                        kv.SetCredential(new DefaultAzureCredential());
+                    });
+                    //  ConfigurationRefresher = options.GetRefresher();
+                });
+            }
+            _configuration = builder.Build();
+            // catch (CredentialUnavailableException e)
+            // {
+            //     builder = new ConfigurationBuilder();
+
+            //_configuration = builder.Build();
+            //}
         }
 
         [FunctionName("LeeBus")]
@@ -41,7 +72,7 @@ namespace FunctionAppInVSErnesto
             var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");
             var fechaEmision = mySbMsg.SystemProperties.EnqueuedTimeUtc.ToLocalTime();            
-            grabaItemCola(mySbMsg.MessageId, content, fechaEmision, log);
+            grabaItemCola(mySbMsg.MessageId, content + message, fechaEmision, log);
         }
 
         public void grabaItemCola(string messageId, string message, DateTime fechaEmision, ILogger log)

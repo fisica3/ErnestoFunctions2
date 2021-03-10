@@ -50,9 +50,12 @@ namespace FunctionAppInVSErnesto
                                 kv.SetCredential(new DefaultAzureCredential());
                             })
                             .ConfigureRefresh(refreshOptions =>
-                             refreshOptions.Register("TestApp:Settings:Message")
+                             refreshOptions.Register("TestApp:Settings:Message02")
                                  .SetCacheExpiration(TimeSpan.FromSeconds(30))
-                                 );
+                                 )
+                            .UseFeatureFlags(featureFlagOptions => {
+                                featureFlagOptions.CacheExpirationInterval = TimeSpan.FromSeconds(20);
+                            }); 
                 });
             }
         }
