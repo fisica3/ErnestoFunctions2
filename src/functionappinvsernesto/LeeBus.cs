@@ -28,38 +28,6 @@ namespace FunctionAppInVSErnesto
             _configurationRefresher = refresherProvider.Refreshers.First();
             connString = Environment.GetEnvironmentVariable("SqlServerConnection");
         }
- /*       static LeeBus()
-        {
-            var builder = new ConfigurationBuilder();
-            bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
-            connString = Environment.GetEnvironmentVariable("SqlServerConnection");
-            if (isLocal)
-            {
-                var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
-                builder.AddAzureAppConfiguration(appConfLocal);
-            }
-            else
-            {
-                builder.AddAzureAppConfiguration(options =>
-                {
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
-                    .ConfigureKeyVault(kv =>
-                    {
-                        kv.SetCredential(new DefaultAzureCredential());
-                    });
-                  //  ConfigurationRefresher = options.GetRefresher();
-                });
-            }
-            _configuration = builder.Build();
-
-            // catch (CredentialUnavailableException e)
-            // {
-            //     builder = new ConfigurationBuilder();
-                 
-            //_configuration = builder.Build();
-            //}
-
-    }  */
 
         [FunctionName("LeeBus")]
         public void Run([ServiceBusTrigger(

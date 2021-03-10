@@ -47,11 +47,13 @@ namespace FunctionAppInVSErnesto
                 await _configurationRefresher.RefreshAsync();
                 messageKeyVault = _configuration[keyVaultEntry];
             }
+
+            bool flag = await _featureManagerSnapshot.IsEnabledAsync("ActivacionMensaje");
             string keyName =  "TestApp:Settings:Message02";
             string message = _configuration[keyName];
             
             return message != null
-                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' el proceso salio OK en Video")
+                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' el FeatureFlag devolvio {flag.ToString()} en el repo")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
     }
