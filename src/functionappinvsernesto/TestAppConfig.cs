@@ -42,9 +42,10 @@ namespace FunctionAppInVSErnesto
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
             string keyVaultEntry = "proxymusk";
             string messageKeyVault = "keyvault es local";
-            await _configurationRefresher.TryRefreshAsync();
+            
             if (!isLocal)
             {
+                await _configurationRefresher.RefreshAsync();
                 messageKeyVault = _configuration[keyVaultEntry];
             }
             
