@@ -54,7 +54,7 @@ namespace FunctionAppInVSErnesto
             string message = _configuration[keyName];
             
             return message != null
-                ? (ActionResult)new OkObjectResult($"El valor recuperado desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}'.")
+                ? (ActionResult)new OkObjectResult($"La cadena recuperada desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}'.")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
     }
