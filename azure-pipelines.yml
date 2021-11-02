@@ -8,7 +8,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'EnlaceRG_Functions04'
+  azureSubscription: 'SCEnlaceDedicadoTemporal3'
 
   # Function app name
   functionAppNameDev: 'devconsumption01'

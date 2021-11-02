@@ -44,7 +44,7 @@ namespace FunctionAppInVSErnesto
                 {
                     //Rol Requerido para AppConfiguration: App Configuration Data Reader
                     //Rol Requerido para KeyVault: Key Vault Secrets User
-                    options.Connect(cs)//new Uri(cs), new ManagedIdentityCredential())
+                    options.Connect(new Uri(cs), new ManagedIdentityCredential())
                             .ConfigureKeyVault(kv =>
                             {
                                 kv.SetCredential(new DefaultAzureCredential());
