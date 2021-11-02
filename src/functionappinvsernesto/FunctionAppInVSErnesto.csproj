@@ -7,19 +7,19 @@
     <Compile Remove="DemoDurable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.3.0" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.8.0" />
-    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.6.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.16.0" />
+    <PackageReference Include="Azure.Identity" Version="1.5.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.8.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.1.1" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.1.3" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="4.0.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.DurableTask" Version="2.4.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.2.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="4.0.3" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.DurableTask" Version="2.5.1" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.1.0" />
-    <PackageReference Include="Microsoft.FeatureManagement" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.0" />
+    <PackageReference Include="Microsoft.FeatureManagement" Version="2.4.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
   </ItemGroup>
   <ItemGroup>
