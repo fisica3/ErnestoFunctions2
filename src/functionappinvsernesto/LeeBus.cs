@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +31,7 @@ namespace FunctionAppInVSErnesto
 
         static LeeBus()
         {
-            var builder = new ConfigurationBuilder();
+            var builder = new ConfigurationBuilder();            
             bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
             connString = Environment.GetEnvironmentVariable("SqlServerConnection");
             if (isLocal)
@@ -64,15 +64,16 @@ namespace FunctionAppInVSErnesto
         public void Run([ServiceBusTrigger(
                 topicName: "%MiLeeBus.Topic%",
                 subscriptionName: "%MiLeeBus.Subscription%",
-                Connection = "MiLeeBus.Connection")]Message mySbMsg, ILogger log)
+                Connection = "MiLeeBus.Connection")] ServiceBusReceivedMessage mySbMsg, ILogger log)
         {
             log.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg.MessageId}");
             string keyName = "TestApp:Settings:Message02";
-            string message = _configuration[keyName];            
-            var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
+            string message = _configuration[keyName];
+            //var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
+            var content = mySbMsg.Body.ToString();
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");
-            var fechaEmision = mySbMsg.SystemProperties.EnqueuedTimeUtc.ToLocalTime();            
-            grabaItemCola(mySbMsg.MessageId, content + message, fechaEmision, log);
+            var fechaEmision = mySbMsg.ScheduledEnqueueTime.DateTime.ToLocalTime();            
+            grabaItemCola(mySbMsg.MessageId, content + " " + message, fechaEmision, log);
         }
 
         public void grabaItemCola(string messageId, string message, DateTime fechaEmision, ILogger log)
