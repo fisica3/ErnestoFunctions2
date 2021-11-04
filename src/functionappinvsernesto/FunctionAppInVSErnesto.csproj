@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="DemoDurable.cs" />
+    <Compile Remove="PrimerDurable.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.5.0" />

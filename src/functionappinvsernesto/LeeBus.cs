@@ -73,7 +73,7 @@ namespace FunctionAppInVSErnesto
             var content = mySbMsg.Body.ToString();
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");
             var fechaEmision = mySbMsg.ScheduledEnqueueTime.DateTime.ToLocalTime();            
-            grabaItemCola(mySbMsg.MessageId, content + " " + message, fechaEmision, log);
+            grabaItemCola(mySbMsg.MessageId, $"{content} {message}", fechaEmision, log);
         }
 
         public void grabaItemCola(string messageId, string message, DateTime fechaEmision, ILogger log)
