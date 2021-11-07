@@ -11,7 +11,7 @@ variables:
   azureSubscription: 'SCEnlaceDedicadoTemporal3'
 
   # Function app name
-  functionAppNameDev: 'devconsumption01'
+  functionAppNameDev: 'devconsumption02'
   functionAppNameUat: 'demofunctions04'
   # Agent VM image name
   vmImageName: 'windows-2019'
