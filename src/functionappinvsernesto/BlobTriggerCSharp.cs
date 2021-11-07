@@ -41,10 +41,10 @@ namespace FunctionAppInVSErnesto
         }
 
         [FunctionName("BlobTriggerCSharp")]
-        public static void Run([BlobTrigger("cookbookfiles2/{name}", Connection = "AzureWebJobsStorage")]Stream myBlob, string name, ILogger log)
+        public static void Run([BlobTrigger("cookbookfiles2/{name}", Connection = "ConnectionBlobTriggerOrigen")]Stream myBlob, string name, ILogger log)
         {
             var folderTarget = "destino";
-            var connectionTarget = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+            var connectionTarget = Environment.GetEnvironmentVariable("ConnectionBlobTriggerDestino");
             string keyName = "CopyPrefix";
             string prefix = Configuration[keyName];
             log.LogInformation($"***Lab*****Función disparada por cambio en blob \n Name:{name} \n Size: {myBlob.Length} Bytes");
