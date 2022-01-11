@@ -4,6 +4,7 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="BlobTriggerCSharp.cs" />
     <Compile Remove="DemoDurable.cs" />
     <Compile Remove="DemoFileShare.cs" />
     <Compile Remove="LeeBus.cs" />
