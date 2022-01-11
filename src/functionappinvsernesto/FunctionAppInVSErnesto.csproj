@@ -10,6 +10,7 @@
     <Compile Remove="LeeBus.cs" />
     <Compile Remove="PrimerDurable.cs" />
     <Compile Remove="ReadStorageQueue.cs" />
+    <Compile Remove="TestAppConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.5.0" />
