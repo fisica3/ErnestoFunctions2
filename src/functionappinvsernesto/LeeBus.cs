@@ -64,7 +64,7 @@ namespace FunctionAppInVSErnesto
         public void Run([ServiceBusTrigger(
                 topicName: "%MiLeeBus.Topic%",
                 subscriptionName: "%MiLeeBus.Subscription%",
-                Connection = "MiLeeBus.Connection")] ServiceBusReceivedMessage mySbMsg, ILogger log)
+                Connection = "MiLeeBusConnection")] ServiceBusReceivedMessage mySbMsg, ILogger log)
         {
             log.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg.MessageId}");
             string keyName = "TestApp:Settings:Message02";
