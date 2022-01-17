@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using Microsoft.Azure.WebJobs;
 using Azure.Identity;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Azure.WebJobs.Extensions.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
