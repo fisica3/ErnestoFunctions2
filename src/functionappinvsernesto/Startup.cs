@@ -53,9 +53,7 @@ namespace FunctionAppInVSErnesto
                              refreshOptions.Register("TestApp:Settings:Message02")
                                  .SetCacheExpiration(TimeSpan.FromSeconds(30))
                                  )
-                            .UseFeatureFlags(featureFlagOptions => {
-                                featureFlagOptions.CacheExpirationInterval = TimeSpan.FromSeconds(20);
-                            }); 
+                            .UseFeatureFlags(); 
                 });
             }
         }
