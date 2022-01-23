@@ -56,7 +56,7 @@ namespace FunctionAppInVSErnesto
             string message = _configuration[keyName];
             if (flag) GuardaenBD(message,log);
             return message != null
-                ? (ActionResult)new OkObjectResult($"La cadena recuperada desde AppConfig fue '{message}', y el valor desde KeyVault era '{messageKeyVault}' :)")
+                ? (ActionResult)new OkObjectResult($"La cadena recuperada desde AppConfig fue '{message}', y el valor desde KeyVault era '{messageKeyVault}' {flag} :)")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
 
