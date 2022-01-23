@@ -69,10 +69,9 @@ namespace FunctionAppInVSErnesto
             log.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg.MessageId}");
             string keyName = "TestApp:Settings:Message02";
             string message = _configuration[keyName];
-            //var content = Encoding.ASCII.GetString(mySbMsg.Body, 0, mySbMsg.Body.Length); 
             var content = mySbMsg.Body.ToString();
             log.LogInformation($"Desde SB: {content}. Desde AppConfig: {message}");
-            var fechaEmision = mySbMsg.ScheduledEnqueueTime.DateTime.ToLocalTime();            
+            var fechaEmision = mySbMsg.EnqueuedTime.DateTime.ToLocalTime();            
             grabaItemCola(mySbMsg.MessageId, $"{content} {message}", fechaEmision, log);
         }
 

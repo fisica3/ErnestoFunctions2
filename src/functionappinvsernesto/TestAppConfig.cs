@@ -26,9 +26,10 @@ namespace FunctionAppInVSErnesto
         private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
         private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
-
+        private static string connString;
         public TestAppConfig(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
         {
+            connString = Environment.GetEnvironmentVariable("SqlServerConnection");
             isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
             _configuration = configuration;
             _featureManagerSnapshot = featureManagerSnapshot;
@@ -39,6 +40,7 @@ namespace FunctionAppInVSErnesto
     [FunctionName("TestAppConfig")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
+            
             log.LogInformation("El trigger HTTP con C#, proceso un request.");
             string keyVaultEntry = "proxymusk";
             string messageKeyVault = "keyvault es local";
@@ -52,10 +54,47 @@ namespace FunctionAppInVSErnesto
             bool flag = await _featureManagerSnapshot.IsEnabledAsync("ActivacionMensaje");
             string keyName =  "TestApp:Settings:Message02";
             string message = _configuration[keyName];
-            
+            if (flag) GuardaenBD(message,log);
             return message != null
                 ? (ActionResult)new OkObjectResult($"La cadena recuperada desde AppConfig fue '{message}', y el valor desde KeyVault fue '{messageKeyVault}' :)")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
+        }
+
+        public void GuardaenBD(string message, ILogger log)
+        {
+            DateTime fechaEmision = DateTime.Now;
+            var rnd = new Random(fechaEmision.Millisecond);
+            var idRnd = rnd.Next(50000);
+            grabaItemCola(idRnd.ToString(), $"TestAppConfig: {message}", fechaEmision, log);
+        }
+
+        public void grabaItemCola(string messageId, string message, DateTime fechaEmision, ILogger log)
+        {
+            var item = new Model.ItemCola
+            {
+                Message = message,
+                MessageId = messageId,
+                FechaEmision = fechaEmision,
+                FechaHoraRecepcion = System.DateTime.Now
+            };
+            try
+            {
+                using (var db = new AppDbContext(connString))
+                {
+                    /* db.Database.EnsureDeleted();*/
+                    db.Database.EnsureCreated();
+                    db.ItemColas.Add(item);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                throw;
+            }
+
+
+
         }
     }
 }
