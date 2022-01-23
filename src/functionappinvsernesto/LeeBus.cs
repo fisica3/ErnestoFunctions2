@@ -2,9 +2,7 @@ using System;
 using Microsoft.Azure.WebJobs;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
-using System.Text;
 using Microsoft.Extensions.Configuration;
-using Azure.Identity;
 using Microsoft.FeatureManagement;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using System.Linq;
@@ -17,50 +15,18 @@ namespace FunctionAppInVSErnesto
         private static bool isLocal;
         private static string connString;
         private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
-       // private readonly IConfiguration _configuration;
         private IConfigurationRefresher _configurationRefresher;
 
-        /* public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
+        public LeeBus(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
          {
              isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));            
              _configuration = configuration;
              _featureManagerSnapshot = featureManagerSnapshot;
              _configurationRefresher = refresherProvider.Refreshers.First();
              connString = Environment.GetEnvironmentVariable("SqlServerConnection");
-         } */
+         } 
 
-        static LeeBus()
-        {
-            var builder = new ConfigurationBuilder();            
-            bool isLocal = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
-            connString = Environment.GetEnvironmentVariable("SqlServerConnection");
-            if (isLocal)
-            {
-                var appConfLocal = Environment.GetEnvironmentVariable("KeyConnectionString");
-                builder.AddAzureAppConfiguration(appConfLocal);
-            }
-            else
-            {
-                builder.AddAzureAppConfiguration(options =>
-                {
-                    options.Connect(new Uri(Environment.GetEnvironmentVariable("EndpointURL")), new ManagedIdentityCredential())
-                    .ConfigureKeyVault(kv =>
-                    {
-                        kv.SetCredential(new DefaultAzureCredential());
-                    });
-                    //  ConfigurationRefresher = options.GetRefresher();
-                });
-            }
-            _configuration = builder.Build();
-            // catch (CredentialUnavailableException e)
-            // {
-            //     builder = new ConfigurationBuilder();
-
-            //_configuration = builder.Build();
-            //}
-        }
-
-        [FunctionName("LeeBus")]
+         [FunctionName("LeeBus")]
         public void Run([ServiceBusTrigger(
                 topicName: "%MiLeeBus.Topic%",
                 subscriptionName: "%MiLeeBus.Subscription%",

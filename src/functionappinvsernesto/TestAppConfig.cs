@@ -20,8 +20,6 @@ namespace FunctionAppInVSErnesto
 {
     public  class TestAppConfig
     {
-        //private static IConfiguration Configuration { set; get; }
-        //private static IConfigurationRefresher ConfigurationRefresher { set; get; }
         private static bool isLocal;
         private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
         private readonly IConfiguration _configuration;
@@ -34,7 +32,6 @@ namespace FunctionAppInVSErnesto
             _configuration = configuration;
             _featureManagerSnapshot = featureManagerSnapshot;
             _configurationRefresher = refresherProvider.Refreshers.First();
-
         }
 
     [FunctionName("TestAppConfig")]
