@@ -4,6 +4,7 @@
 	  <AzureFunctionsVersion>v4</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="DemoDurable.cs" />
     <Compile Remove="DemoFileShare.cs" />
     <Compile Remove="PrimerDurable.cs" />
     <Compile Remove="ReadStorageQueue.cs" />
