@@ -42,13 +42,16 @@ namespace FunctionAppInVSErnesto
         public static void Run([BlobTrigger("cookbookfiles2/{name}", Connection = "ConnectionBlobTriggerOrigen")]Stream myBlob, string name, ILogger log)
         {
             var folderTarget = "destino";
-            var connectionTarget = Environment.GetEnvironmentVariable("ConnectionBlobTriggerDestino");
+//            var connectionTarget = Environment.GetEnvironmentVariable("ConnectionBlobTriggerDestino");
+            var connectionTarget = new Uri(Environment.GetEnvironmentVariable("ConnectionBlobTriggerDestino__serviceUri") + "/" + folderTarget);           
+
             string keyName = "CopyPrefix";
             string prefix = Configuration[keyName];
             log.LogInformation($"***Lab*****Función disparada por cambio en blob \n Name:{name} \n Size: {myBlob.Length} Bytes");
             if (name.Contains(".svg"))
             {
-                BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, folderTarget);
+                //BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, folderTarget);
+                BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, new DefaultAzureCredential());
                 containerTarget.CreateIfNotExists();
                 BlobClient blobTarget = containerTarget.GetBlobClient($"{prefix}_{name}");
                 blobTarget.Upload(myBlob);
