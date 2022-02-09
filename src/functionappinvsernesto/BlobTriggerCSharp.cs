@@ -50,12 +50,20 @@ namespace FunctionAppInVSErnesto
             log.LogInformation($"***Lab*****Función disparada por cambio en blob \n Name:{name} \n Size: {myBlob.Length} Bytes");
             if (name.Contains(".svg"))
             {
-                //BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, folderTarget);
-                BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, new DefaultAzureCredential());
-                containerTarget.CreateIfNotExists();
-                BlobClient blobTarget = containerTarget.GetBlobClient($"{prefix}_{name}");
-                blobTarget.Upload(myBlob);
-                log.LogInformation($"***Lab***** File {name} copied into {folderTarget}");
+                try
+                {
+                    //BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, folderTarget);
+                    BlobContainerClient containerTarget = new BlobContainerClient(connectionTarget, new DefaultAzureCredential());
+                    containerTarget.CreateIfNotExists();
+                    BlobClient blobTarget = containerTarget.GetBlobClient($"{prefix}_{name}");
+                    blobTarget.Upload(myBlob);
+                    log.LogInformation($"***Lab***** File {name} copied into {folderTarget}");
+                }
+                catch (Exception ex)
+                {
+                    log.LogError($"***Error***** {ex.Message}");
+                }
+
             }
         }
     }
