@@ -25,7 +25,8 @@ namespace FunctionAppInVSErnesto
              _configurationRefresher = refresherProvider.Refreshers.First();
              connString = Environment.GetEnvironmentVariable("SqlServerConnection");
          } 
-
+//Notese que si bien aqui hacemos usamos MiLeeBus.Connection, en al Application Settings estamos declarando 
+//MiLeeBus.Connection__fullyQualifiedNamespace, esto es debido a que queremos el soporte de Managed Identities desde el trigger
          [FunctionName("LeeBus")]
         public void Run([ServiceBusTrigger(
                 topicName: "%MiLeeBus.Topic%",
