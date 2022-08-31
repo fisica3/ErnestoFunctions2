@@ -53,7 +53,7 @@ namespace FunctionAppInVSErnesto
             string message = _configuration[keyName];
             if (flag) GuardaenBD(message,log);
             return message != null
-                ? (ActionResult)new OkObjectResult($"(Reactor) La cadena recuperada desde AppConfig fue '{message}', y el valor desde KeyVault era '{messageKeyVault}' {flag} :)")
+                ? (ActionResult)new OkObjectResult($"(Microsoft Reactor) La cadena recuperada desde AppConfig fue '{message}', y el valor desde KeyVault era '{messageKeyVault}' {flag} :)")
                 : new BadRequestObjectResult($"Please create a key-value with the key '{keyName}' in App Configuration, gracias.");
         }
 
