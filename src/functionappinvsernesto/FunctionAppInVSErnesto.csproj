@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
 	  <AzureFunctionsVersion>v4</AzureFunctionsVersion>
@@ -10,7 +10,7 @@
     <Compile Remove="ReadStorageQueue.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.5.0" />
+    <PackageReference Include="Azure.Identity" Version="1.10.2" />
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.5.1" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.8.0" />
