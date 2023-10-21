@@ -14,7 +14,7 @@ namespace FunctionAppInVSErnesto
         [FunctionName("AzureDevOpsTrigger02")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
-            log.LogInformation("El C# HTTP trigger proceso una función de Azure DevOps");
+            log.LogInformation("El C# HTTP trigger proceso una funciÃ³n de Azure DevOps");
 
             string name = req.Query["name"];
 
@@ -24,7 +24,7 @@ namespace FunctionAppInVSErnesto
 
             return name != null
                 ? ProcessNameandTime(name)
-                : new BadRequestObjectResult("Por favor pase un nombre en el query string o en el request body");
+                : new BadRequestObjectResult("Por favor, pase un nombre en el query string o en el request body.");
         }
 
         private static ActionResult ProcessNameandTime(string name)
